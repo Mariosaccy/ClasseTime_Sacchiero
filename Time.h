@@ -15,17 +15,17 @@ public:
     Time(int ore, int minuti, int secondi);
     Time(const Time& time);
 
-    string show(bool formato);
+    string show(bool formato) const;
     void set(int ore, int minuti, int secondi);
 
-    int get_o();
-    int get_m();
-    int get_s();
+    int get_o() const;
+    int get_m() const;
+    int get_s() const;
 
-    bool operator>(const Time& time);
-    bool operator<(const Time& time);
-    bool operator==(const Time& time);
-    int operator-(const Time& time);
+    bool operator>(const Time& time) const;
+    bool operator<(const Time& time) const;
+    bool operator==(const Time& time) const;
+    int operator-(const Time& time) const;
     friend Time operator+(const Time& t, int secondIn);
 };
 

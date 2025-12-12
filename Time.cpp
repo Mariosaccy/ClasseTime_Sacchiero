@@ -23,7 +23,7 @@ Time::Time(const Time &time) {
     this->secondi = time.secondi;
 }
 
-string Time::show(bool formato) {
+string Time::show(bool formato) const {
     if (!formato) { // formato 12H
         int hour12 = ore % 12;
         if (hour12 == 0) hour12 = 12;  // 0 ore = 12 AM
@@ -50,19 +50,19 @@ void Time::set(int ore, int minuti, int secondi) {
         }
 }
 
-int Time::get_o() {
+int Time::get_o() const {
     return ore;
 }
 
-int Time::get_m() {
+int Time::get_m() const {
     return minuti;
 }
 
-int Time::get_s() {
+int Time::get_s() const {
     return secondi;
 }
 
-bool Time::operator>(const Time &time) {
+bool Time::operator>(const Time &time) const {
 
         if (ore != time.ore) {
             return ore > time.ore;
@@ -73,7 +73,7 @@ bool Time::operator>(const Time &time) {
         return secondi > time.secondi;
 }
 
-bool Time::operator<(const Time &time) {
+bool Time::operator<(const Time &time) const {
     if (ore != time.ore) {
         return ore < time.ore;
     }
@@ -83,7 +83,7 @@ bool Time::operator<(const Time &time) {
     return secondi < time.secondi;
 }
 
-bool Time::operator==(const Time &time) {
+bool Time::operator==(const Time &time) const {
     if (ore != time.ore || minuti != time.minuti || secondi != time.secondi) {
         return false;
     } else {
@@ -91,7 +91,7 @@ bool Time::operator==(const Time &time) {
     }
 }
 
-int Time::operator-(const Time &time) {
+int Time::operator-(const Time &time) const {
     int oraCalc = ore - time.ore;
     int minutiCalc = minuti - time.minuti;
     int secondiCalc = secondi - time.secondi;
