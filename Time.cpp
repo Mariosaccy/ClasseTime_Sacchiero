@@ -24,12 +24,17 @@ Time::Time(const Time &time) {
 }
 
 string Time::show(bool formato) {
-    if (!formato && ore >= 12) { // formato true 24H, false 12H
-        return to_string(ore-12)+"PM:"+to_string(minuti)+":"+to_string(secondi);
-    } else if (!formato && ore < 12) {
-        return to_string(ore)+"AM:"+to_string(minuti)+":"+to_string(secondi);
-    } else {
-        return to_string(ore)+":"+to_string(minuti)+":"+to_string(secondi);
+    if (!formato) { // formato 12H
+        int hour12 = ore % 12;
+        if (hour12 == 0) hour12 = 12;  // 0 ore = 12 AM
+        string periodo = (ore >= 12) ? "PM" : "AM";
+        return to_string(hour12) + ":" +
+               to_string(minuti) + ":" +
+               to_string(secondi) + periodo;
+    } else { // formato 24H
+        return to_string(ore) + ":" +
+               to_string(minuti) + ":" +
+               to_string(secondi);
     }
 }
 
@@ -105,33 +110,18 @@ int Time::operator-(const Time &time) {
 }
 
 Time operator+(const Time& t, int secondIn) {
-    int oraCalc = secondIn / 3600;
-    secondIn %= 3600;
-    int minutiCalc = secondIn / 60;
-    int secondInt = secondIn % 60;
+    int total_seconds = t.ore * 3600 + t.minuti * 60 + t.secondi;
+    total_seconds += secondIn;
 
-    int newSecondi = t.secondi;
-    int newMinuti = t.minuti;
-    int newOre = t.ore;
-
-    // gestione secondi
-    if (newSecondi + secondInt >= 60) {
-        newSecondi += secondInt - 60;
-        minutiCalc++;
-    } else {
-        newSecondi += secondInt;
+    total_seconds %= (24 * 3600);
+    if (total_seconds < 0) {
+        total_seconds += 24 * 3600;
     }
 
-    // gestione minuti
-    if (newMinuti + minutiCalc >= 60) {
-        newMinuti += minutiCalc - 60;
-        oraCalc++;
-    } else {
-        newMinuti += minutiCalc;
-    }
+    int ore = total_seconds / 3600;
+    total_seconds %= 3600;
+    int minuti = total_seconds / 60;
+    int secondi = total_seconds % 60;
 
-    // gestione ore
-    newOre = (newOre + oraCalc) % 24;
-
-    return Time(newOre, newMinuti, newSecondi);
+    return Time(ore, minuti, secondi);
 }
